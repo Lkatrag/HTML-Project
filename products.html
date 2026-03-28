@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop — The Grounded Way Cafe</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- FILTER BAR ---- */
+    .filter-bar {
+      padding: 10rem 5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-tabs { display: flex; gap: 0; }
+    .filter-tab {
+      font-family: var(--font-ui); font-size: 0.6rem; font-weight: 300;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      padding: 0.75rem 1.75rem; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; background: transparent;
+      transition: all 0.3s; margin-right: -1px;
+    }
+    .filter-tab:hover { color: var(--blush); border-color: var(--rose); z-index: 1; }
+    .filter-tab.active { background: var(--rose); border-color: var(--rose); color: var(--cream); z-index: 2; }
+    .product-count {
+      font-family: var(--font-ui); font-size: 0.58rem; letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+
+    /* ---- PRODUCT GRID ---- */
+    .product-section { padding: 4rem 5rem 7rem; }
+    .category-head {
+      display: flex; align-items: center; gap: 2rem;
+      margin-bottom: 2.5rem; margin-top: 4rem;
+    }
+    .category-head:first-child { margin-top: 0; }
+    .category-head h2 {
+      font-family: var(--font-display); font-size: 1.6rem;
+      font-weight: 700; color: var(--cream); white-space: nowrap;
+    }
+    .category-head h2 em { color: var(--rose); font-style: italic; }
+    .category-line { flex: 1; height: 1px; background: var(--border); }
+
+    .products-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+    }
+    .product-card {
+      background: var(--deep); border: 1px solid var(--border);
+      overflow: hidden; transition: all 0.35s var(--ease);
+      cursor: pointer; position: relative;
+    }
+    .product-card:hover {
+      border-color: rgba(196,98,122,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .product-img {
+      aspect-ratio: 1; overflow: hidden; position: relative;
+    }
+    .product-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+    .product-card:hover .product-img img { transform: scale(1.08); }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      font-family: var(--font-ui); font-size: 0.5rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; background: var(--rose); color: var(--cream);
+    }
+    .product-info { padding: 1.25rem 1.25rem 1.5rem; }
+    .product-cat {
+      font-family: var(--font-ui); font-size: 0.52rem;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+    .product-name {
+      font-family: var(--font-display); font-size: 1.05rem;
+      font-weight: 700; color: var(--cream); margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .product-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+    .product-footer {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .product-price {
+      font-family: var(--font-display); font-size: 1.15rem;
+      font-weight: 700; color: var(--blush);
+    }
+    .add-btn {
+      font-family: var(--font-ui); font-size: 0.55rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      padding: 0.5rem 1rem; background: transparent;
+      border: 1px solid var(--border); color: var(--muted);
+      cursor: pointer; transition: all 0.3s;
+    }
+    .add-btn:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* ---- PRICING TABLE ---- */
+    .pricing-section {
+      background: var(--plum);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 7rem 5rem;
+    }
+    .pricing-header { text-align: center; margin-bottom: 4rem; }
+    .pricing-table-wrap {
+      max-width: 900px; margin: 0 auto;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .pricing-table { width: 100%; border-collapse: collapse; }
+    .pricing-table caption {
+      font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--gold);
+      padding: 1.5rem; caption-side: top; text-align: center;
+      background: rgba(14,11,15,0.5); border-bottom: 1px solid var(--border);
+    }
+    .pricing-table thead th {
+      font-family: var(--font-ui); font-size: 0.58rem; font-weight: 300;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--muted); background: rgba(14,11,15,0.4);
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .pricing-table thead th:last-child { text-align: right; }
+    .pricing-table tbody tr { border-bottom: 1px solid rgba(201,165,90,0.07); }
+    .pricing-table tbody tr:last-child { border-bottom: none; }
+    .pricing-table tbody tr:hover { background: rgba(196,98,122,0.05); }
+    .pricing-table tbody td {
+      padding: 1rem 1.5rem; font-size: 0.95rem; color: var(--parchment);
+    }
+    .pricing-table tbody td:last-child { text-align: right; color: var(--blush); font-family: var(--font-display); font-size: 1rem; }
+    .pricing-table tbody td.desc { color: var(--muted); font-size: 0.88rem; }
+    .pricing-table .section-row td {
+      background: rgba(43,26,46,0.7); color: var(--gold);
+      font-family: var(--font-ui); font-size: 0.55rem;
+      letter-spacing: 0.35em; text-transform: uppercase; padding: 0.6rem 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .filter-bar { flex-direction: column; gap: 1.5rem; padding: 9rem 1.5rem 2rem; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .product-section, .pricing-section { padding: 3rem 1.5rem 5rem; }
+    }
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: 1fr; }
+      .filter-tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">The Grounded <span>Way</span></span>
+    <span class="logo-sub">Café · Flowers · Books</span>
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html" class="active">Shop</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Visit Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-tabs">
+    <button class="filter-tab active">All</button>
+    <button class="filter-tab">Flowers</button>
+    <button class="filter-tab">Books</button>
+    <button class="filter-tab">Café</button>
+    <button class="filter-tab">Gifts</button>
+  </div>
+  <div class="product-count">Showing 12 products</div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="product-section">
+
+  <!-- FLOWERS -->
+  <div class="category-head">
+    <h2>Fresh <em>Flowers</em></h2>
+    <div class="category-line"></div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1487530811015-780780169993?w=500&q=80" alt="Garden Bouquet" />
+        <span class="product-badge">Seasonal</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Fresh Flowers</div>
+        <div class="product-name">Garden Wildflower Bouquet</div>
+        <div class="product-desc">A seasonal mix of locally grown stems — peonies, ranunculus, anemones, and garden greens.</div>
+        <div class="product-footer">
+          <div class="product-price">$38</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=500&q=80" alt="Dark Roses" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Fresh Flowers</div>
+        <div class="product-name">Midnight Rose Arrangement</div>
+        <div class="product-desc">Deep burgundy and black-petal roses with dried amaranth and eucalyptus, in a ceramic vase.</div>
+        <div class="product-footer">
+          <div class="product-price">$65</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=500&q=80" alt="Dried Botanicals" />
+        <span class="product-badge">Bestseller</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Dried Flowers</div>
+        <div class="product-name">Dried Botanical Bundle</div>
+        <div class="product-desc">Pampas grass, dried lavender, and preserved florals — a lasting arrangement for any space.</div>
+        <div class="product-footer">
+          <div class="product-price">$42</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=500&q=80" alt="Potted Plant" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Potted Plants</div>
+        <div class="product-name">Heirloom Potted Fern</div>
+        <div class="product-desc">A lush maidenhair fern in a hand-thrown ceramic pot. Perfect for low-light spaces.</div>
+        <div class="product-footer">
+          <div class="product-price">$48</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOKS -->
+  <div class="category-head">
+    <h2>Curated <em>Books</em></h2>
+    <div class="category-line"></div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500&q=80" alt="Poetry Collection" />
+        <span class="product-badge">Staff Pick</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Poetry</div>
+        <div class="product-name">The Bloom Anthology</div>
+        <div class="product-desc">A curated collection of botanical poetry from 40 contemporary poets. Beautifully illustrated.</div>
+        <div class="product-footer">
+          <div class="product-price">$28</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&q=80" alt="Art Book" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Art & Botany</div>
+        <div class="product-name">Florilegium: Botanical Art</div>
+        <div class="product-desc">Over 300 pages of stunning historical botanical illustrations from European herbaria.</div>
+        <div class="product-footer">
+          <div class="product-price">$75</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=500&q=80" alt="Novel" />
+        <span class="product-badge">New</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Fiction</div>
+        <div class="product-name">The Secret Garden Retold</div>
+        <div class="product-desc">A haunting contemporary retelling of the classic — lush, dark, and beautifully written.</div>
+        <div class="product-footer">
+          <div class="product-price">$22</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=500&q=80" alt="Journal" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Stationery</div>
+        <div class="product-name">Pressed-Flower Journal</div>
+        <div class="product-desc">Handmade paper journal with a dried flower cover. 200 pages, lay-flat binding.</div>
+        <div class="product-footer">
+          <div class="product-price">$34</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAFÉ -->
+  <div class="category-head">
+    <h2>Café <em>Offerings</em></h2>
+    <div class="category-line"></div>
+  </div>
+  <div class="products-grid">
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&q=80" alt="Specialty Coffee" />
+        <span class="product-badge">Bestseller</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Coffee Beans</div>
+        <div class="product-name">House Espresso Blend</div>
+        <div class="product-desc">Direct-trade Ethiopian and Colombian blend. Notes of dark cherry, cocoa, and cardamom. 250g bag.</div>
+        <div class="product-footer">
+          <div class="product-price">$24</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Loose Leaf Tea" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Tea</div>
+        <div class="product-name">Botanical Loose-Leaf Tin</div>
+        <div class="product-desc">A blended rose, hibiscus, and chamomile loose-leaf tea. Caffeine-free. 80g tin.</div>
+        <div class="product-footer">
+          <div class="product-price">$18</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80" alt="Baked Goods" />
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Pâtisserie</div>
+        <div class="product-name">Rose & Cardamom Tart</div>
+        <div class="product-desc">Buttery tart shell, rose-water custard, cardamom cream, and fresh petals. Made daily.</div>
+        <div class="product-footer">
+          <div class="product-price">$7</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=500&q=80" alt="Gift Set" />
+        <span class="product-badge">Gift</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Gift Sets</div>
+        <div class="product-name">The Grounded Way Gift Box</div>
+        <div class="product-desc">Coffee beans, botanical tea, a journal, and a dried mini-bouquet. Beautifully packaged.</div>
+        <div class="product-footer">
+          <div class="product-price">$72</div>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- PRICING TABLE -->
+<section class="pricing-section">
+  <div class="pricing-header">
+    <span class="tag">Custom Orders</span>
+    <h2 class="section-title">Floral <em>Pricing Guide</em></h2>
+    <div class="divider center"></div>
+    <p style="color:var(--muted); max-width:480px; margin:0 auto; font-size:1rem;">For events, weddings, and custom commissions — here's a guide to our arrangement pricing.</p>
+  </div>
+  <div class="pricing-table-wrap">
+    <table class="pricing-table">
+      <caption>Custom Arrangement Pricing — 2025</caption>
+      <thead>
+        <tr>
+          <th>Arrangement</th>
+          <th>Description</th>
+          <th>Stems</th>
+          <th style="text-align:right">Starting Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="section-row"><td colspan="4">Everyday Arrangements</td></tr>
+        <tr>
+          <td>Hand-Tied Bouquet</td>
+          <td class="desc">Seasonal flowers, wrapped in kraft &amp; ribbon</td>
+          <td>12–18</td>
+          <td>$35</td>
+        </tr>
+        <tr>
+          <td>Vase Arrangement</td>
+          <td class="desc">In our signature ceramic or glass vessel</td>
+          <td>15–25</td>
+          <td>$55</td>
+        </tr>
+        <tr>
+          <td>Dried Bundle</td>
+          <td class="desc">Long-lasting dried &amp; preserved florals</td>
+          <td>10–15</td>
+          <td>$42</td>
+        </tr>
+        <tr class="section-row"><td colspan="4">Events &amp; Occasions</td></tr>
+        <tr>
+          <td>Table Centrepiece</td>
+          <td class="desc">Low or elevated, for dining or events</td>
+          <td>30–50</td>
+          <td>$120</td>
+        </tr>
+        <tr>
+          <td>Bridal Bouquet</td>
+          <td class="desc">Custom design, consultation included</td>
+          <td>40–60</td>
+          <td>$185</td>
+        </tr>
+        <tr>
+          <td>Full Event Package</td>
+          <td class="desc">Centrepieces, ceremony arch &amp; reception florals</td>
+          <td>200+</td>
+          <td>$1,200</td>
+        </tr>
+        <tr class="section-row"><td colspan="4">Subscriptions</td></tr>
+        <tr>
+          <td>Weekly Bouquet</td>
+          <td class="desc">Fresh hand-tied, delivered to your door</td>
+          <td>12–18</td>
+          <td>$28 / week</td>
+        </tr>
+        <tr>
+          <td>Monthly Box</td>
+          <td class="desc">Flowers + a book + a seasonal item</td>
+          <td>—</td>
+          <td>$65 / month</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-main">The Grounded <span>Way</span></span>
+        <span class="logo-sub">Café · Flowers · Books</span>
+      </div>
+      <p>A sanctuary for slow mornings, curious minds, and beautiful things. Find us in the heart of Montreal.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="products.html">Fresh Flowers</a></li>
+        <li><a href="products.html">Custom Arrangements</a></li>
+        <li><a href="products.html">Curated Books</a></li>
+        <li><a href="products.html">Specialty Coffee</a></li>
+        <li><a href="products.html">Event Florals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, QC H2X 1Y4<br/>
+        (514) 555-0192<br/>
+        hello@groundedway.ca
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 The Grounded Way Café. All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="var(--ink)"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="var(--ink)" stroke-width="2"/></svg></a>
+      <a href="https://youtube.com" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--ink)"/></svg></a>
+      <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.132-1.867 3.132-4.562 0-2.387-1.715-4.057-4.163-4.057-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.773.741 2.274a.3.3 0 0 1 .069.285c-.076.312-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.938.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Filter tab interactivity
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

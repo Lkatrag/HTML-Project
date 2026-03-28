@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — The Grounded Way Cafe</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO ---- */
+    .about-hero {
+      min-height: 65vh;
+      display: flex; align-items: flex-end;
+      position: relative; overflow: hidden;
+      padding: 0 5rem 5rem;
+    }
+    .about-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=1400&q=80') center/cover no-repeat;
+      opacity: 0.3; z-index: 0;
+    }
+    .about-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(0deg, var(--ink) 0%, rgba(14,11,15,0.6) 60%, rgba(14,11,15,0.2) 100%);
+      z-index: 1;
+    }
+    .about-hero-content {
+      position: relative; z-index: 2; max-width: 700px;
+    }
+    .about-hero-content .section-title {
+      font-size: clamp(3rem, 7vw, 6rem);
+    }
+
+    /* ---- STORY ---- */
+    .story-section {
+      padding: 7rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6rem; align-items: start;
+    }
+    .story-text p {
+      font-size: 1.05rem; color: var(--muted); line-height: 1.9;
+      margin-bottom: 1.5rem;
+    }
+    .story-text p strong { color: var(--blush); font-weight: 500; }
+    .story-img-wrap {
+      position: relative;
+    }
+    .story-img-wrap img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+    }
+    .story-img-wrap::before {
+      content: '';
+      position: absolute; top: -1.5rem; left: -1.5rem; right: 1.5rem; bottom: 1.5rem;
+      border: 1px solid var(--border); z-index: 0;
+    }
+    .story-img-wrap img { position: relative; z-index: 1; }
+    .img-caption {
+      font-family: var(--font-ui); font-size: 0.58rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted);
+      margin-top: 1rem; text-align: right; position: relative; z-index: 1;
+    }
+
+    /* ---- VALUES ---- */
+    .values-section {
+      background: var(--plum);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 7rem 5rem;
+    }
+    .values-header { text-align: center; margin-bottom: 5rem; }
+    .values-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem;
+    }
+    .value-card {
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      background: rgba(14,11,15,0.4);
+      transition: all 0.35s var(--ease);
+    }
+    .value-card:hover {
+      border-color: var(--rose);
+      transform: translateY(-4px);
+    }
+    .value-icon {
+      font-size: 2.5rem; margin-bottom: 1.5rem; display: block;
+    }
+    .value-title {
+      font-family: var(--font-display); font-size: 1.3rem;
+      font-weight: 700; color: var(--cream); margin-bottom: 0.75rem;
+    }
+    .value-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+
+    /* ---- TEAM ---- */
+    .team-section { padding: 7rem 5rem; }
+    .team-header { text-align: center; margin-bottom: 5rem; }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem;
+    }
+    .team-card { text-align: center; }
+    .team-photo {
+      width: 180px; height: 180px; border-radius: 50%;
+      object-fit: cover; margin: 0 auto 1.5rem;
+      border: 2px solid var(--border);
+      filter: grayscale(30%) sepia(20%);
+      transition: all 0.4s;
+    }
+    .team-card:hover .team-photo {
+      border-color: var(--rose); filter: grayscale(0%) sepia(0%);
+    }
+    .team-name {
+      font-family: var(--font-display); font-size: 1.3rem;
+      font-weight: 700; color: var(--cream); margin-bottom: 0.3rem;
+    }
+    .team-role {
+      font-family: var(--font-ui); font-size: 0.58rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .team-bio { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+
+    /* ---- MILESTONES TABLE ---- */
+    .milestones-section {
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      padding: 7rem 5rem;
+    }
+    .milestones-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .milestones-table {
+      border: 1px solid var(--border);
+    }
+    .milestones-table table { width: 100%; }
+    .milestones-table table caption {
+      font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--gold);
+      padding: 1.5rem 1.5rem 1rem; caption-side: top; text-align: left;
+    }
+    .milestones-table thead th {
+      font-family: var(--font-ui); font-size: 0.55rem; font-weight: 300;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+      padding: 0.75rem 1.5rem; border-bottom: 1px solid var(--border);
+      text-align: left; background: rgba(43,26,46,0.5);
+    }
+    .milestones-table tbody td {
+      padding: 1rem 1.5rem; font-size: 0.95rem;
+      border-bottom: 1px solid rgba(201,165,90,0.07);
+    }
+    .milestones-table tbody tr:last-child td { border-bottom: none; }
+    .milestones-table .year { color: var(--gold); font-family: var(--font-display); font-style: italic; }
+    .milestones-table .milestone { color: var(--parchment); }
+    .milestones-table .note { color: var(--muted); font-size: 0.88rem; }
+
+    @media (max-width: 900px) {
+      .about-hero { padding: 0 1.5rem 3rem; }
+      .story-section, .milestones-inner { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+      .values-grid, .team-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .values-section, .team-section, .milestones-section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">The Grounded <span>Way</span></span>
+    <span class="logo-sub">Café · Flowers · Books</span>
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Visit Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="about-hero">
+  <div class="about-hero-content">
+    <span class="tag anim d1">Our Story</span>
+    <h1 class="section-title anim d2">More than<br/><em>a café.</em></h1>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-text">
+    <span class="tag">Who We Are</span>
+    <h2 class="section-title">Rooted in <em>passion</em></h2>
+    <div class="divider"></div>
+    <p>The Grounded Way Café was born in 2019 from a single stubborn belief: that a café should feel like the best version of staying home. <strong>Founder Mireille Dupont</strong> had spent a decade working as a florist in Paris before returning to Montreal with an obsession for slow mornings and beautiful things.</p>
+    <p>She combined her love of <strong>botanical design</strong> with her partner Éric's lifelong passion for <strong>independent literature</strong>, and the result was something Montreal had never quite seen before — a place where you could buy a wedding bouquet, discover a favourite novel, and linger over a perfectly made cortado, all in the same visit.</p>
+    <p>Today we are a team of nine dreamers, each one bringing their own art to our shared space. The flowers change with the season. The book tables are rearranged every Sunday. The espresso is always freshly ground.</p>
+    <a href="products.html" class="btn btn-rose" style="margin-top:1rem;">See Our Offerings →</a>
+  </div>
+  <div class="story-img-wrap">
+    <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=700&q=80" alt="Inside The Grounded Way" />
+    <p class="img-caption">Our shop on Bloom Street, Spring 2023</p>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="values-header">
+    <span class="tag">What We Believe</span>
+    <h2 class="section-title">Our <em>values</em></h2>
+    <div class="divider center"></div>
+  </div>
+  <div class="values-grid">
+    <div class="value-card">
+      <span class="value-icon">🌿</span>
+      <div class="value-title">Slow & Intentional</div>
+      <p class="value-desc">We resist the rush. Every arrangement is made by hand. Every book is chosen with purpose. We believe the best things take time.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">🌱</span>
+      <div class="value-title">Sustainably Sourced</div>
+      <p class="value-desc">Our flowers come from local and ethical growers. Our coffee is direct-trade. Our packaging is plastic-free. We care about where things come from.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">📖</span>
+      <div class="value-title">Community First</div>
+      <p class="value-desc">We stock local authors, host community readings, and collaborate with neighbourhood artists. This space belongs to the people who fill it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section">
+  <div class="team-header">
+    <span class="tag">The People</span>
+    <h2 class="section-title">Meet the <em>team</em></h2>
+    <div class="divider center"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <img class="team-photo" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80" alt="Mireille Dupont" />
+      <div class="team-name">Mireille Dupont</div>
+      <div class="team-role">Founder & Head Florist</div>
+      <p class="team-bio">Trained in Paris, rooted in Montreal. Mireille designs all seasonal arrangements and heads our custom floral studio.</p>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Éric Beaumont" />
+      <div class="team-name">Éric Beaumont</div>
+      <div class="team-role">Co-Founder & Book Curator</div>
+      <p class="team-bio">Former literature professor and obsessive reader. Éric curates every shelf and hosts our monthly author evenings.</p>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Sasha Lin" />
+      <div class="team-name">Sasha Lin</div>
+      <div class="team-role">Head Barista</div>
+      <p class="team-bio">Q-grader certified and creator of our beloved lavender oat latte. Sasha brings precision and warmth to every cup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES TABLE -->
+<section class="milestones-section">
+  <div class="milestones-inner">
+    <div>
+      <span class="tag">Our Journey</span>
+      <h2 class="section-title">Five years of <em>blooming</em></h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted); font-size:1rem; line-height:1.9; max-width:360px;">
+        From a tiny pop-up on St-Denis to a beloved neighbourhood institution,
+        here's how The Grounded Way has grown.
+      </p>
+    </div>
+    <div class="milestones-table">
+      <table>
+        <caption>Timeline of Milestones</caption>
+        <thead>
+          <tr><th>Year</th><th>Milestone</th><th>Note</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="year">2019</td>
+            <td class="milestone">Grand Opening</td>
+            <td class="note">123 Bloom Street, Montreal</td>
+          </tr>
+          <tr>
+            <td class="year">2020</td>
+            <td class="milestone">Book Section Added</td>
+            <td class="note">200+ titles curated</td>
+          </tr>
+          <tr>
+            <td class="year">2021</td>
+            <td class="milestone">First Author Evening</td>
+            <td class="note">Now monthly event series</td>
+          </tr>
+          <tr>
+            <td class="year">2022</td>
+            <td class="milestone">Best Café — MTL Awards</td>
+            <td class="note">Neighbourhood category</td>
+          </tr>
+          <tr>
+            <td class="year">2023</td>
+            <td class="milestone">Custom Floral Studio</td>
+            <td class="note">Weddings &amp; events</td>
+          </tr>
+          <tr>
+            <td class="year">2024</td>
+            <td class="milestone">Online Shop Launched</td>
+            <td class="note">Bouquets &amp; book bundles</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-main">The Grounded <span>Way</span></span>
+        <span class="logo-sub">Café · Flowers · Books</span>
+      </div>
+      <p>A sanctuary for slow mornings, curious minds, and beautiful things. Find us in the heart of Montreal.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="products.html">Fresh Flowers</a></li>
+        <li><a href="products.html">Custom Arrangements</a></li>
+        <li><a href="products.html">Curated Books</a></li>
+        <li><a href="products.html">Specialty Coffee</a></li>
+        <li><a href="products.html">Event Florals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, QC H2X 1Y4<br/>
+        (514) 555-0192<br/>
+        hello@groundedway.ca
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 The Grounded Way Café. All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="var(--ink)"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="var(--ink)" stroke-width="2"/></svg></a>
+      <a href="https://youtube.com" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--ink)"/></svg></a>
+      <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.132-1.867 3.132-4.562 0-2.387-1.715-4.057-4.163-4.057-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.773.741 2.274a.3.3 0 0 1 .069.285c-.076.312-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.938.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — The Grounded Way Cafe</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO ---- */
+    .gallery-hero { padding: 11rem 5rem 4rem; }
+    .gallery-hero-inner {
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+
+    /* ---- MASONRY GALLERY ---- */
+    .gallery-section { padding: 2rem 5rem 7rem; }
+    .masonry {
+      columns: 3; column-gap: 1rem;
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .masonry-item img {
+      width: 100%; display: block;
+      transition: transform 0.6s var(--ease);
+      filter: brightness(0.9) saturate(0.85);
+    }
+    .masonry-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1);
+    }
+    .masonry-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(14,11,15,0.75) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.4s var(--ease);
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .masonry-item:hover .masonry-overlay { opacity: 1; }
+    .masonry-caption {
+      font-family: var(--font-display); font-size: 0.95rem;
+      font-style: italic; color: var(--cream); line-height: 1.3;
+    }
+    .masonry-tag {
+      font-family: var(--font-ui); font-size: 0.5rem;
+      letter-spacing: 0.35em; text-transform: uppercase; color: var(--rose);
+      display: block; margin-bottom: 0.3rem;
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(14,11,15,0.96); backdrop-filter: blur(20px);
+      align-items: center; justify-content: center; padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { position: relative; max-width: 900px; width: 100%; }
+    .lightbox-inner img {
+      width: 100%; max-height: 80vh; object-fit: contain;
+      border: 1px solid var(--border);
+    }
+    .lightbox-close {
+      position: absolute; top: -3rem; right: 0;
+      font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--muted); background: none;
+      border: none; cursor: pointer; transition: color 0.3s;
+    }
+    .lightbox-close:hover { color: var(--rose); }
+    .lightbox-caption {
+      margin-top: 1rem; text-align: center;
+      font-family: var(--font-display); font-style: italic;
+      font-size: 1rem; color: var(--muted);
+    }
+
+    /* ---- INSTAGRAM STRIP ---- */
+    .insta-strip {
+      background: var(--plum);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 5rem;
+      text-align: center;
+    }
+    .insta-strip .tag { text-align: center; }
+    .insta-strip h2 { margin-bottom: 3rem; }
+    .insta-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem;
+    }
+    .insta-item { aspect-ratio: 1; overflow: hidden; position: relative; }
+    .insta-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.8) saturate(0.8);
+      transition: all 0.4s var(--ease);
+    }
+    .insta-item:hover img { filter: brightness(1) saturate(1.1); transform: scale(1.05); }
+    .insta-item::after {
+      content: '♡';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; color: white; opacity: 0;
+      background: rgba(196,98,122,0.3);
+      transition: opacity 0.3s;
+    }
+    .insta-item:hover::after { opacity: 1; }
+    .insta-handle {
+      margin-top: 2rem;
+      font-family: var(--font-ui); font-size: 0.65rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold);
+    }
+
+    @media (max-width: 900px) {
+      .gallery-hero { padding: 9rem 1.5rem 3rem; }
+      .gallery-hero-inner { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+      .gallery-section { padding: 2rem 1.5rem 5rem; }
+      .masonry { columns: 2; }
+      .insta-strip { padding: 4rem 1.5rem; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .masonry { columns: 1; }
+      .insta-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">The Grounded <span>Way</span></span>
+    <span class="logo-sub">Café · Flowers · Books</span>
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="gallery.html" class="active">Gallery</a></li>
+      <li><a href="contact.html">Visit Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="gallery-hero">
+  <div class="gallery-hero-inner">
+    <div>
+      <span class="tag anim d1">Visual Journal</span>
+      <h1 class="section-title anim d2" style="font-size: clamp(3rem, 7vw, 6rem);">
+        Our <em>Gallery</em>
+      </h1>
+    </div>
+    <p class="anim d3" style="color:var(--muted); max-width:340px; font-size:1rem; line-height:1.8; text-align:right;">
+      Glimpses of life inside The Grounded Way — the flowers, the pages, the cups, and the quiet moments in between.
+    </p>
+  </div>
+</section>
+
+<!-- MASONRY GALLERY -->
+<section class="gallery-section">
+  <div class="masonry" id="gallery">
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1487530811015-780780169993?w=900&q=85" data-caption="Spring wildflower collection, hand-arranged by Mireille">
+      <img src="https://images.unsplash.com/photo-1487530811015-780780169993?w=600&q=80" alt="Wildflower bouquet" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Flowers</span>Spring Wildflower Collection</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=85" data-caption="Our cortado in the morning light — always freshly ground">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80" alt="Coffee" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Café</span>Morning Cortado</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=85" data-caption="The book wall — rearranged every Sunday morning">
+      <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80" alt="Books" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Books</span>The Book Wall</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=900&q=85" data-caption="Midnight roses — part of our dark floral signature range">
+      <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80" alt="Dark roses" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Flowers</span>Midnight Rose Arrangement</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=900&q=85" data-caption="Inside our café on a rainy Tuesday morning">
+      <img src="https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=600&q=80" alt="Interior" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Space</span>A Rainy Tuesday Morning</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=900&q=85" data-caption="Dried pampas and preserved stems from our winter collection">
+      <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&q=80" alt="Dried florals" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Dried</span>Winter Botanical Bundle</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=900&q=85" data-caption="A quiet corner — books, blooms, and a warm cup">
+      <img src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=600&q=80" alt="Café corner" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Space</span>A Quiet Corner</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=900&q=85" data-caption="Our pressed-flower journals — each cover is unique">
+      <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=600&q=80" alt="Journals" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Stationery</span>Pressed-Flower Journals</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=900&q=85" data-caption="Our rose and cardamom tart — made every morning at 6am">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Tart" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Pâtisserie</span>Rose & Cardamom Tart</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=900&q=85" data-caption="Our botanical art book collection — a feast for the eyes">
+      <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80" alt="Art books" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Books</span>Botanical Art Collection</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=900&q=85" data-caption="Heirloom ferns in hand-thrown ceramic pots">
+      <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=600&q=80" alt="Potted plants" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Plants</span>Heirloom Ceramic Collection</div>
+      </div>
+    </div>
+
+    <div class="masonry-item" data-src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85" data-caption="Our signature gift boxes — the perfect thing to give">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Gift box" loading="lazy" />
+      <div class="masonry-overlay">
+        <div class="masonry-caption"><span class="masonry-tag">Gifts</span>The Grounded Way Gift Box</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightbox-close">✕ Close</button>
+    <img id="lightbox-img" src="" alt="" />
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+</div>
+
+<!-- INSTAGRAM STRIP -->
+<section class="insta-strip">
+  <span class="tag">Follow Along</span>
+  <h2 class="section-title" style="margin-bottom:3rem;">On <em>Instagram</em></h2>
+  <div class="insta-grid">
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1487530811015-780780169993?w=300&q=70" alt="Instagram 1" loading="lazy" /></div>
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&q=70" alt="Instagram 2" loading="lazy" /></div>
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=300&q=70" alt="Instagram 3" loading="lazy" /></div>
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=300&q=70" alt="Instagram 4" loading="lazy" /></div>
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=300&q=70" alt="Instagram 5" loading="lazy" /></div>
+    <div class="insta-item"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&q=70" alt="Instagram 6" loading="lazy" /></div>
+  </div>
+  <p class="insta-handle">@thegroundedwaycafe</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-main">The Grounded <span>Way</span></span>
+        <span class="logo-sub">Café · Flowers · Books</span>
+      </div>
+      <p>A sanctuary for slow mornings, curious minds, and beautiful things. Find us in the heart of Montreal.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="products.html">Fresh Flowers</a></li>
+        <li><a href="products.html">Custom Arrangements</a></li>
+        <li><a href="products.html">Curated Books</a></li>
+        <li><a href="products.html">Specialty Coffee</a></li>
+        <li><a href="products.html">Event Florals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, QC H2X 1Y4<br/>
+        (514) 555-0192<br/>
+        hello@groundedway.ca
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 The Grounded Way Café. All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="var(--ink)"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="var(--ink)" stroke-width="2"/></svg></a>
+      <a href="https://youtube.com" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--ink)"/></svg></a>
+      <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.132-1.867 3.132-4.562 0-2.387-1.715-4.057-4.163-4.057-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.773.741 2.274a.3.3 0 0 1 .069.285c-.076.312-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.938.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Lightbox
+  const items = document.querySelectorAll('.masonry-item');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbCaption = document.getElementById('lightbox-caption');
+
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      lbImg.src = item.dataset.src;
+      lbCaption.textContent = item.dataset.caption;
+      lightbox.classList.add('open');
+    });
+  });
+
+  document.getElementById('lightbox-close').addEventListener('click', () => {
+    lightbox.classList.remove('open');
+  });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) lightbox.classList.remove('open');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') lightbox.classList.remove('open');
+  });
+</script>
+</body>
+</html>

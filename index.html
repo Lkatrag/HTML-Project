@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Grounded Way Cafe — Flowers, Books & Coffee</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 0 5rem;
+      background: radial-gradient(ellipse at 30% 60%, rgba(43,26,46,0.9) 0%, var(--ink) 65%);
+    }
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1490750967868-88df5691cc35?w=1400&q=80') center/cover no-repeat;
+      opacity: 0.18; z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 700px;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-ui); font-size: 0.6rem; font-weight: 200;
+      letter-spacing: 0.55em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: block; width: 40px; height: 1px; background: var(--gold);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 1.05;
+      color: var(--cream); margin-bottom: 1.5rem;
+    }
+    .hero-title em { color: var(--rose); font-style: italic; display: block; }
+    .hero-sub {
+      font-family: var(--font-body); font-size: 1.15rem;
+      color: var(--muted); line-height: 1.8; max-width: 480px;
+      margin-bottom: 3rem;
+    }
+    .hero-actions { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+
+    /* floating floral right side */
+    .hero-floral {
+      position: absolute; right: 4%; top: 50%;
+      transform: translateY(-50%);
+      z-index: 1; opacity: 0.55;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    /* ---- INTRO STRIP ---- */
+    .intro-strip {
+      background: var(--plum);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 2.5rem 5rem;
+      display: flex; gap: 4rem; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .intro-item {
+      display: flex; align-items: center; gap: 1rem;
+      font-family: var(--font-ui); font-size: 0.62rem;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+      white-space: nowrap;
+    }
+    .intro-item svg { fill: var(--rose); flex-shrink: 0; }
+    .intro-sep { color: var(--border); font-size: 1.2rem; }
+
+    /* ---- ABOUT TEASER ---- */
+    .about-teaser {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; min-height: 600px;
+    }
+    .about-img {
+      background: url('https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=800&q=80') center/cover no-repeat;
+      position: relative;
+    }
+    .about-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 60%, var(--ink) 100%);
+    }
+    .about-text {
+      background: var(--deep);
+      padding: 6rem 5rem; display: flex; flex-direction: column; justify-content: center;
+    }
+    .about-text p {
+      font-size: 1.05rem; color: var(--muted); line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ---- OFFERINGS GRID ---- */
+    .offerings { padding: 7rem 5rem; }
+    .offerings-header { text-align: center; margin-bottom: 4rem; }
+    .offerings-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .offer-card {
+      position: relative; overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+    .offer-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.7s var(--ease);
+    }
+    .offer-card:hover img { transform: scale(1.07); }
+    .offer-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(14,11,15,0.92) 0%, rgba(14,11,15,0.2) 60%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2.5rem;
+      transition: all 0.4s var(--ease);
+    }
+    .offer-label {
+      font-family: var(--font-ui); font-size: 0.55rem; font-weight: 300;
+      letter-spacing: 0.45em; text-transform: uppercase; color: var(--rose);
+      margin-bottom: 0.5rem;
+    }
+    .offer-title {
+      font-family: var(--font-display); font-size: 1.8rem;
+      font-weight: 700; color: var(--cream); line-height: 1.2;
+    }
+    .offer-desc {
+      font-size: 0.9rem; color: var(--muted); margin-top: 0.75rem;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.5s var(--ease), opacity 0.4s;
+      opacity: 0;
+    }
+    .offer-card:hover .offer-desc { max-height: 80px; opacity: 1; }
+
+    /* ---- QUOTE BANNER ---- */
+    .quote-banner {
+      padding: 7rem 5rem; text-align: center;
+      background: var(--plum);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .quote-banner::before {
+      content: '\201C';
+      font-family: var(--font-display); font-size: 20rem; font-weight: 900;
+      color: rgba(196,98,122,0.06);
+      position: absolute; top: -4rem; left: 2rem; line-height: 1;
+      pointer-events: none;
+    }
+    .quote-text {
+      font-family: var(--font-display); font-style: italic;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      color: var(--cream); max-width: 750px; margin: 0 auto 1.5rem;
+      line-height: 1.4; position: relative; z-index: 1;
+    }
+    .quote-attr {
+      font-family: var(--font-ui); font-size: 0.6rem; font-weight: 300;
+      letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold);
+    }
+
+    /* ---- HOURS TABLE ---- */
+    .hours-section {
+      padding: 7rem 5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .hours-visual {
+      background: var(--deep); border: 1px solid var(--border);
+      padding: 3rem;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    table caption {
+      font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--gold);
+      text-align: left; padding-bottom: 1.5rem; caption-side: top;
+    }
+    thead th {
+      font-family: var(--font-ui); font-size: 0.58rem; font-weight: 300;
+      letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted);
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); text-align: left;
+    }
+    tbody tr { border-bottom: 1px solid rgba(201,165,90,0.08); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td {
+      padding: 0.85rem 1rem; font-size: 0.95rem; color: var(--parchment);
+    }
+    tbody td:last-child { color: var(--muted); text-align: right; }
+    tbody tr.today td { color: var(--blush); }
+    tbody tr.today td:first-child::before {
+      content: '▸ '; color: var(--rose);
+    }
+
+    @media (max-width: 900px) {
+      .hero { padding: 0 1.5rem; }
+      .intro-strip { padding: 2rem 1.5rem; flex-wrap: wrap; gap: 1.5rem; }
+      .about-teaser { grid-template-columns: 1fr; }
+      .about-img { height: 300px; }
+      .about-img::after { background: linear-gradient(0deg, var(--ink) 0%, transparent 60%); }
+      .about-text { padding: 3rem 1.5rem; }
+      .offerings { padding: 4rem 1.5rem; }
+      .offerings-grid { grid-template-columns: 1fr; }
+      .hours-section { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+      .quote-banner { padding: 5rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">The Grounded <span>Way</span></span>
+    <span class="logo-sub">Café · Flowers · Books</span>
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Visit Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow anim d1">Where stories bloom</div>
+    <h1 class="hero-title anim d2">
+      Flowers, Books
+      <em>&amp; Good Coffee.</em>
+    </h1>
+    <p class="hero-sub anim d3">
+      A sanctuary for the curious soul — where hand-picked blooms, curated reads,
+      and slow-brewed cups come together in one moody, beautiful space.
+    </p>
+    <div class="hero-actions anim d4">
+      <a href="products.html" class="btn btn-rose">Explore the Shop</a>
+      <a href="contact.html" class="btn btn-outline">Find Us</a>
+    </div>
+  </div>
+  <!-- Decorative SVG floral -->
+  <svg class="hero-floral" width="420" height="520" viewBox="0 0 420 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="210" cy="90" rx="55" ry="80" fill="#c4627a" opacity="0.5" transform="rotate(-15 210 90)"/>
+    <ellipse cx="260" cy="120" rx="45" ry="70" fill="#7a9e7e" opacity="0.4" transform="rotate(20 260 120)"/>
+    <ellipse cx="170" cy="110" rx="40" ry="65" fill="#4a1c3a" opacity="0.6" transform="rotate(-30 170 110)"/>
+    <ellipse cx="215" cy="95" rx="30" ry="50" fill="#e8a0af" opacity="0.3" transform="rotate(5 215 95)"/>
+    <line x1="210" y1="160" x2="210" y2="480" stroke="#7a9e7e" stroke-width="3" opacity="0.5"/>
+    <ellipse cx="185" cy="260" rx="35" ry="55" fill="#c4627a" opacity="0.35" transform="rotate(-25 185 260)"/>
+    <ellipse cx="235" cy="330" rx="30" ry="48" fill="#7a9e7e" opacity="0.3" transform="rotate(18 235 330)"/>
+    <ellipse cx="192" cy="390" rx="28" ry="44" fill="#4a1c3a" opacity="0.45" transform="rotate(-10 192 390)"/>
+    <circle cx="210" cy="95" r="15" fill="#c9a55a" opacity="0.6"/>
+    <circle cx="210" cy="95" r="8" fill="#e0c07a" opacity="0.8"/>
+  </svg>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <div class="intro-item">
+    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    123 Bloom Street, Montreal
+  </div>
+  <span class="intro-sep">·</span>
+  <div class="intro-item">
+    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm1 17.93V18a1 1 0 0 0-2 0v1.93A8.001 8.001 0 0 1 4.07 13H6a1 1 0 0 0 0-2H4.07A8.001 8.001 0 0 1 11 4.07V6a1 1 0 0 0 2 0V4.07A8.001 8.001 0 0 1 19.93 11H18a1 1 0 0 0 0 2h1.93A8.001 8.001 0 0 1 13 19.93z"/></svg>
+    Open Daily 8am – 9pm
+  </div>
+  <span class="intro-sep">·</span>
+  <div class="intro-item">
+    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.47 11.47 0 0 0 3.58.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.47 11.47 0 0 0 .57 3.58 1 1 0 0 1-.25 1.03z"/></svg>
+    (514) 555-0192
+  </div>
+  <span class="intro-sep">·</span>
+  <div class="intro-item">
+    <svg width="16" height="16" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+    hello@groundedway.ca
+  </div>
+</div>
+
+<!-- ABOUT TEASER -->
+<section class="about-teaser">
+  <div class="about-img"></div>
+  <div class="about-text">
+    <span class="tag anim d1">Our Story</span>
+    <h2 class="section-title anim d2">A place to <em>linger</em></h2>
+    <div class="divider anim d3"></div>
+    <p class="anim d3">
+      Born from a love of slow mornings and beautiful things, The Grounded Way
+      opened its doors in 2019. We are part café, part florist, part bookshop —
+      and entirely a labour of love.
+    </p>
+    <p class="anim d4">
+      Every arrangement is hand-crafted. Every book is hand-picked. Every cup
+      is made with care. Come as you are. Stay as long as you like.
+    </p>
+    <a href="about.html" class="btn btn-outline anim d5" style="margin-top:2rem; width:fit-content;">Our Full Story →</a>
+  </div>
+</section>
+
+<!-- OFFERINGS -->
+<section class="offerings">
+  <div class="offerings-header">
+    <span class="tag">What We Offer</span>
+    <h2 class="section-title">Three worlds, <em>one door</em></h2>
+    <div class="divider center"></div>
+  </div>
+  <div class="offerings-grid">
+    <div class="offer-card">
+      <img src="https://images.unsplash.com/photo-1487530811015-780780169993?w=700&q=80" alt="Fresh flowers" loading="lazy" />
+      <div class="offer-overlay">
+        <div class="offer-label">Bloom</div>
+        <div class="offer-title">Fresh Flowers &amp; Arrangements</div>
+        <div class="offer-desc">Seasonal bouquets, bespoke arrangements, and dried florals for every occasion.</div>
+      </div>
+    </div>
+    <div class="offer-card">
+      <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=700&q=80" alt="Books" loading="lazy" />
+      <div class="offer-overlay">
+        <div class="offer-label">Read</div>
+        <div class="offer-title">Curated Books &amp; Stationery</div>
+        <div class="offer-desc">Fiction, poetry, botanical art books, and beautiful journals to fill your shelves.</div>
+      </div>
+    </div>
+    <div class="offer-card">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80" alt="Coffee" loading="lazy" />
+      <div class="offer-overlay">
+        <div class="offer-label">Sip</div>
+        <div class="offer-title">Specialty Coffee &amp; Tea</div>
+        <div class="offer-desc">Ethically sourced espresso, floral lattes, cold brew, and loose-leaf tea blends.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BANNER -->
+<section class="quote-banner">
+  <p class="quote-text">"A room without books is like a body without a soul — add flowers, and it becomes a home."</p>
+  <div class="divider center"></div>
+  <p class="quote-attr">— The Grounded Way Philosophy</p>
+</section>
+
+<!-- HOURS TABLE -->
+<section class="hours-section">
+  <div>
+    <span class="tag">Plan Your Visit</span>
+    <h2 class="section-title">We're open <em>every day</em></h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted); font-size:1rem; line-height:1.9; max-width:380px;">
+      Whether you're grabbing a morning latte, hunting for a weekend read,
+      or ordering a wedding arrangement — we're here, kettle on.
+    </p>
+    <a href="contact.html" class="btn btn-rose" style="margin-top:2rem;">Get Directions</a>
+  </div>
+  <div class="hours-visual">
+    <table>
+      <caption>Hours of Operation</caption>
+      <thead>
+        <tr><th>Day</th><th>Hours</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Monday</td><td>8:00 am – 8:00 pm</td></tr>
+        <tr><td>Tuesday</td><td>8:00 am – 8:00 pm</td></tr>
+        <tr><td>Wednesday</td><td>8:00 am – 8:00 pm</td></tr>
+        <tr class="today"><td>Thursday</td><td>8:00 am – 9:00 pm</td></tr>
+        <tr><td>Friday</td><td>8:00 am – 9:00 pm</td></tr>
+        <tr><td>Saturday</td><td>9:00 am – 9:00 pm</td></tr>
+        <tr><td>Sunday</td><td>10:00 am – 7:00 pm</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-main">The Grounded <span>Way</span></span>
+        <span class="logo-sub">Café · Flowers · Books</span>
+      </div>
+      <p>A sanctuary for slow mornings, curious minds, and beautiful things. Find us in the heart of Montreal.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="products.html">Fresh Flowers</a></li>
+        <li><a href="products.html">Custom Arrangements</a></li>
+        <li><a href="products.html">Curated Books</a></li>
+        <li><a href="products.html">Specialty Coffee</a></li>
+        <li><a href="products.html">Event Florals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, QC H2X 1Y4<br/>
+        (514) 555-0192<br/>
+        hello@groundedway.ca
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 The Grounded Way Café. All rights reserved.</p>
+    <div class="social-links">
+      <!-- Facebook -->
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <!-- Instagram -->
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="var(--ink)"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="var(--ink)" stroke-width="2"/></svg>
+      </a>
+      <!-- YouTube -->
+      <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--ink)"/></svg>
+      </a>
+      <!-- Pinterest -->
+      <a href="https://pinterest.com" target="_blank" aria-label="Pinterest">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.132-1.867 3.132-4.562 0-2.387-1.715-4.057-4.163-4.057-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.773.741 2.274a.3.3 0 0 1 .069.285c-.076.312-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.938.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

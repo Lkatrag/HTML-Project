@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visit Us — The Grounded Way Cafe</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---- HERO ---- */
+    .contact-hero { padding: 11rem 5rem 5rem; }
+    .contact-hero-inner { max-width: 650px; }
+
+    /* ---- CONTACT GRID ---- */
+    .contact-main {
+      display: grid; grid-template-columns: 1fr 1.6fr;
+      gap: 0; border-top: 1px solid var(--border);
+    }
+
+    /* Left column - info */
+    .contact-info {
+      padding: 5rem; background: var(--deep);
+      border-right: 1px solid var(--border);
+    }
+    .info-block { margin-bottom: 3rem; }
+    .info-block h3 {
+      font-family: var(--font-ui); font-size: 0.58rem; font-weight: 300;
+      letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .info-block p, .info-block address {
+      font-size: 1rem; color: var(--muted); line-height: 2;
+      font-style: normal;
+    }
+    .info-block a { color: var(--blush); transition: color 0.3s; }
+    .info-block a:hover { color: var(--cream); }
+    .info-block strong { color: var(--parchment); }
+
+    /* Hours in contact page */
+    .contact-hours-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    .contact-hours-table tr { border-bottom: 1px solid rgba(201,165,90,0.08); }
+    .contact-hours-table tr:last-child { border-bottom: none; }
+    .contact-hours-table td { padding: 0.55rem 0; font-size: 0.92rem; color: var(--muted); }
+    .contact-hours-table td:last-child { text-align: right; }
+    .contact-hours-table tr.today td { color: var(--blush); }
+    .contact-hours-table tr.today td:first-child::before { content: '▸ '; color: var(--rose); }
+
+    /* Right column - form */
+    .contact-form-wrap {
+      padding: 5rem; background: var(--ink);
+    }
+    .form-header { margin-bottom: 2.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-family: var(--font-ui); font-size: 0.55rem; font-weight: 300;
+      letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--deep); border: 1px solid var(--border);
+      color: var(--parchment); font-family: var(--font-body);
+      font-size: 1rem; padding: 0.85rem 1rem;
+      transition: border-color 0.3s; outline: none; appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); font-style: italic; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--rose); }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--deep); }
+    .form-group textarea { resize: vertical; min-height: 130px; }
+    .form-submit { margin-top: 1.5rem; }
+    .form-note {
+      font-size: 0.85rem; color: var(--muted); margin-top: 1rem; line-height: 1.7;
+    }
+    .success-msg {
+      display: none; background: rgba(122,158,126,0.15); border: 1px solid var(--sage);
+      padding: 1rem 1.5rem; margin-top: 1.5rem;
+      font-size: 0.95rem; color: var(--sage); line-height: 1.7;
+    }
+
+    /* ---- MAP ---- */
+    .map-section {
+      border-top: 1px solid var(--border);
+    }
+    .map-section iframe {
+      width: 100%; height: 480px; border: none; display: block;
+      filter: grayscale(30%) sepia(15%) contrast(0.9) brightness(0.85);
+    }
+    .map-bar {
+      background: var(--plum); border-bottom: 1px solid var(--border);
+      padding: 1.25rem 5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .map-bar-info {
+      font-family: var(--font-ui); font-size: 0.6rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .map-bar-info svg { fill: var(--rose); flex-shrink: 0; }
+
+    /* ---- FAQ ---- */
+    .faq-section {
+      padding: 7rem 5rem; background: var(--deep);
+      border-top: 1px solid var(--border);
+    }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 4rem; }
+    .faq-item {
+      padding: 2rem; border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .faq-item:hover { border-color: rgba(196,98,122,0.35); }
+    .faq-q {
+      font-family: var(--font-display); font-size: 1.05rem;
+      font-weight: 700; color: var(--cream); margin-bottom: 0.75rem;
+    }
+    .faq-a { font-size: 0.95rem; color: var(--muted); line-height: 1.8; }
+
+    @media (max-width: 900px) {
+      .contact-hero { padding: 9rem 1.5rem 3rem; }
+      .contact-main { grid-template-columns: 1fr; }
+      .contact-info { border-right: none; border-bottom: 1px solid var(--border); padding: 3rem 1.5rem; }
+      .contact-form-wrap { padding: 3rem 1.5rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .map-bar { flex-direction: column; gap: 1rem; padding: 1.25rem 1.5rem; }
+      .faq-section { padding: 4rem 1.5rem; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="logo">
+    <span class="logo-main">The Grounded <span>Way</span></span>
+    <span class="logo-sub">Café · Flowers · Books</span>
+  </a>
+  <nav class="main-nav">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="products.html">Shop</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html" class="active">Visit Us</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="contact-hero">
+  <div class="contact-hero-inner">
+    <span class="tag anim d1">Find Us</span>
+    <h1 class="section-title anim d2" style="font-size: clamp(3rem, 7vw, 5.5rem);">
+      Come <em>visit.</em>
+    </h1>
+    <div class="divider anim d3"></div>
+    <p class="anim d4" style="color:var(--muted); font-size:1.05rem; line-height:1.9; max-width:500px;">
+      We'd love to see you. Whether you have a question, a custom order in mind,
+      or simply want to say hello — our door is open.
+    </p>
+  </div>
+</section>
+
+<!-- CONTACT MAIN -->
+<div class="contact-main">
+  <!-- Info Column -->
+  <div class="contact-info">
+    <div class="info-block">
+      <h3>Address</h3>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, Quebec<br/>
+        H2X 1Y4, Canada
+      </address>
+    </div>
+    <div class="info-block">
+      <h3>Get In Touch</h3>
+      <p>
+        Phone: <a href="tel:+15145550192">(514) 555-0192</a><br/>
+        Email: <a href="mailto:hello@groundedway.ca">hello@groundedway.ca</a><br/>
+        Instagram: <a href="https://instagram.com" target="_blank">@thegroundedwaycafe</a>
+      </p>
+    </div>
+    <div class="info-block">
+      <h3>Hours</h3>
+      <table class="contact-hours-table">
+        <tbody>
+          <tr><td>Monday – Wednesday</td><td>8am – 8pm</td></tr>
+          <tr class="today"><td>Thursday</td><td>8am – 9pm</td></tr>
+          <tr><td>Friday</td><td>8am – 9pm</td></tr>
+          <tr><td>Saturday</td><td>9am – 9pm</td></tr>
+          <tr><td>Sunday</td><td>10am – 7pm</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-block">
+      <h3>Getting Here</h3>
+      <p>
+        <strong>Metro:</strong> Sherbrooke Station (Orange Line), 5-min walk<br/>
+        <strong>Bus:</strong> Routes 24, 55, 144<br/>
+        <strong>Parking:</strong> On-street parking on Bloom St. Paid lot on Rivard St.
+      </p>
+    </div>
+  </div>
+
+  <!-- Form Column -->
+  <div class="contact-form-wrap">
+    <div class="form-header">
+      <span class="tag">Send a Message</span>
+      <h2 class="section-title" style="font-size:2rem;">We'd love to <em>hear from you</em></h2>
+    </div>
+    <form id="contact-form" novalidate>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="fname" placeholder="Your first name" />
+        </div>
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="lname" placeholder="Your last name" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone (Optional)</label>
+          <input type="tel" id="phone" name="phone" placeholder="(514) 000-0000" />
+        </div>
+        <div class="form-group full">
+          <label for="subject">I'm interested in…</label>
+          <select id="subject" name="subject">
+            <option value="" disabled selected>Choose a topic</option>
+            <option value="flowers">Fresh Flowers or Bouquets</option>
+            <option value="custom">Custom / Event Florals</option>
+            <option value="books">Book Recommendations</option>
+            <option value="cafe">Café & Menu Enquiries</option>
+            <option value="subscription">Monthly Subscription</option>
+            <option value="wholesale">Wholesale Enquiries</option>
+            <option value="other">Something Else</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="message">Your Message</label>
+          <textarea id="message" name="message" placeholder="Tell us what's on your mind…"></textarea>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button type="submit" class="btn btn-rose">Send Message →</button>
+      </div>
+      <p class="form-note">We reply within 24 hours on business days. For urgent flower orders, please call us directly.</p>
+      <div class="success-msg" id="success-msg">
+        ✓ Thank you! Your message has been received. We'll be in touch shortly.
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-bar">
+    <div class="map-bar-info">
+      <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      123 Bloom Street, Montreal, QC H2X 1Y4
+    </div>
+    <a href="https://maps.google.com/?q=Rue+Saint-Denis,+Montreal,+QC" target="_blank" class="btn btn-outline" style="padding:0.6rem 1.5rem;">Open in Google Maps →</a>
+  </div>
+  <!-- Google Map embed centered on the Saint-Denis / Sherbrooke area, Montreal -->
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2796.097894744327!2d-73.57137908444!3d45.51834537910176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91a4b7d0c7e99%3A0x9c5e6f5e0c0b3e4a!2sRue+Saint-Denis%2C+Montr%C3%A9al%2C+QC!5e0!3m2!1sen!2sca!4v1700000000000!5m2!1sen!2sca"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="The Grounded Way Cafe location map"
+  ></iframe>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div style="text-align:center;">
+    <span class="tag">Common Questions</span>
+    <h2 class="section-title">Before you <em>visit</em></h2>
+    <div class="divider center"></div>
+  </div>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <div class="faq-q">Do you take walk-ins for custom arrangements?</div>
+      <p class="faq-a">Yes! Walk-ins are always welcome for ready-made and seasonal bouquets. For bespoke or event arrangements, we recommend booking a consultation at least one week in advance.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I bring my dog?</div>
+      <p class="faq-a">Absolutely — well-behaved dogs on leashes are warmly welcomed on our terrace. We even keep a water bowl out front. Indoor visits are at the barista's discretion.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do you ship flowers or books?</div>
+      <p class="faq-a">We offer local same-day delivery within Montreal (Island) for flower orders placed before 11am. Book orders ship Canada-wide via Canada Post within 3–5 business days.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is the café accessible?</div>
+      <p class="faq-a">Yes. Our front entrance is step-free, and we have an accessible washroom on the ground floor. Please don't hesitate to contact us if you need specific accommodations.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do you have WiFi?</div>
+      <p class="faq-a">We do — though we gently encourage you to put the phone down and pick up a book instead. The password is on the chalkboard at the counter.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do you host private events?</div>
+      <p class="faq-a">Yes! We host private book clubs, floral workshops, and after-hours buyouts for small gatherings. Contact us to enquire about availability and pricing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">
+        <span class="logo-main">The Grounded <span>Way</span></span>
+        <span class="logo-sub">Café · Flowers · Books</span>
+      </div>
+      <p>A sanctuary for slow mornings, curious minds, and beautiful things. Find us in the heart of Montreal.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="products.html">Shop</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="products.html">Fresh Flowers</a></li>
+        <li><a href="products.html">Custom Arrangements</a></li>
+        <li><a href="products.html">Curated Books</a></li>
+        <li><a href="products.html">Specialty Coffee</a></li>
+        <li><a href="products.html">Event Florals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <address>
+        123 Bloom Street<br/>
+        Montreal, QC H2X 1Y4<br/>
+        (514) 555-0192<br/>
+        hello@groundedway.ca
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 The Grounded Way Café. All rights reserved.</p>
+    <div class="social-links">
+      <a href="https://facebook.com" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+      <a href="https://instagram.com" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="var(--ink)"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="var(--ink)" stroke-width="2"/></svg></a>
+      <a href="https://youtube.com" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="var(--ink)"/></svg></a>
+      <a href="https://pinterest.com" target="_blank" aria-label="Pinterest"><svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.181-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.428 1.808-2.428.852 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.499 1.806 1.476 1.806 1.771 0 3.132-1.867 3.132-4.562 0-2.387-1.715-4.057-4.163-4.057-2.836 0-4.498 2.127-4.498 4.326 0 .856.33 1.773.741 2.274a.3.3 0 0 1 .069.285c-.076.312-.244.995-.277 1.134-.044.183-.146.222-.337.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.966-.527-2.292-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.938.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('success-msg').style.display = 'block';
+    this.reset();
+    setTimeout(() => {
+      document.getElementById('success-msg').style.display = 'none';
+    }, 6000);
+  });
+</script>
+</body>
+</html>
